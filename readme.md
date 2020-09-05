@@ -20,13 +20,7 @@ Or you can add this poc like a dependency, in this case edit your [composer.json
 }
 ```
 
-## Usage
-You can test and evaluate your chiffrage tags with php internal server and go to url http://localhost:8000 :
-
-```shell script
-php -S localhost:8000 -t public
-```
-
+## Configuration and rules management
 You can set your rules for evaluate time or use the default file [chiffrage.ini](https://github.com/jgauthi/poc_chiffrage_pattern/blob/master/config/chiffrage.ini) _(don't set the `$chiffrageIniFile` argument on Pattern constructor)_.
 
 **Example Rules:**
@@ -50,6 +44,23 @@ In case on £ma2, the tool calculate:
 * Additional time: _difficulty * additional_: 2 * 1 = 2h
 * Total: _Initial time + Additional time_ = 2 + 2 = **4h**
 
+## Usage
+You can test and evaluate your chiffrage tags with php internal server and go to url http://localhost:8000 :
+
+```shell script
+php -S localhost:8000 -t public
+```
+
+Or by line command:
+
+```shell script
+# On current poc:
+./bin/chiffrage-calcul.php "£ma1"
+
+# Installed on a project (composer dependencies)
+./vendor/bin/chiffrage-calcul.php "£ma1"
+```
+
 
 ## Documentation
-You can look at [folder public](https://github.com/jgauthi/poc_chiffrage_pattern/tree/master/public).
+You can look at [folder public](public).

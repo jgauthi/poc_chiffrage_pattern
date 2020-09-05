@@ -9,6 +9,7 @@
   "autoload": {
     "psr-4": { "Jgauthi\\Tools\\Chiffrage\\": "src/" }
   },
+  "bin": [ "bin/chiffrage-calcul.php" ],
   "license": "GPL-3.0",
   "authors": [
     { "name": "jgauthi", "homepage": "https://github.com/jgauthi" }
