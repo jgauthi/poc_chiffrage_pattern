@@ -10,7 +10,7 @@ $debug = false;
 // Set Default examples
 if (!isset($_POST['var'])) {
     $example = [
-        'Liste des taches:',
+        'List of tasks:',
         '* Task1 Menu Article LorumIpsu £ma2',
         '* Task2 Feature Service DolorColor £fs3',
         '* Task3 Template Page Lorem £tp',
@@ -43,7 +43,7 @@ if (!empty($_POST['var'])) {
             continue;
         }
 
-        // Retirer un calcul précédent renseigné dans la liste des taches
+        // Remove a previous calculation entered in the list of tasks
         if (!empty($extract[5])) {
             $tache = str_replace($pattern . $extract[5], $pattern, $tache);
         }
@@ -71,21 +71,21 @@ if (!empty($_POST['var'])) {
 </head>
 <body>
 <main role="main" class="container">
+    <h1>Calculation from pattern</h1>
     <div class="row">
-    <h1>Calcul chiffrage à partir de pattern</h1>
 
         <form action="<?=basename($_SERVER['PHP_SELF']); ?>" method="post" class="col-sm-6">
         <fieldset>
-            <label for="var">Liste des taches (1 pattern chiffrage optionnel par ligne):</label><br />
+            <label for="var">List of tasks (1 optional chiffrage pattern per line):</label><br />
             <textarea name="var" id="var" cols="50" rows="20" class="form-control"><?php if (isset($_POST['var'])) {
         echo htmlentities(trim($_POST['var']), ENT_QUOTES, 'UTF-8');
     } ?></textarea>
 
             <br />
-            <div style="float: right"><input type="submit" value="Envoyer"  /></div>
+            <div style="float: right"><input type="submit" value="Send"  /></div>
             <label>
                 <input type="checkbox" name="time_only" value="1"<?=((isset($_POST['time_only'])) ? ' checked="checked"' : null); ?>>
-                Retirer les patterns
+                Remove the patterns
             </label>
 
         </fieldset>
@@ -94,7 +94,7 @@ if (!empty($_POST['var'])) {
         <?php if (!empty($total) && !empty($taches)) : ?>
         <fieldset class="col-sm-6">
             <h3>
-                Résultat du script
+                Script results
                 <em style="font-size: 0.5em;">(<strong>Total:</strong> <?=number_format($total, 2, ',', ' '); ?>h)</em>
             </h3>
             <textarea name="var" cols="50" rows="20" class="form-control" style="padding: 5px; color: blue;" readonly><?=implode("\n", $taches); ?></textarea>

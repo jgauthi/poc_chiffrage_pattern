@@ -15,20 +15,20 @@ class Pattern
     const REGEXP = '\£([a-z])([a-z])([0-9]{1,2})?';
 
     private $rules = [];
-    private $last_extract = null;
+    private $lastExtract = null;
 
     public function __construct($chiffrageIniFile = null)
     {
         if (empty($chiffrageIniFile) || !preg_match('#\.ini$#i', $chiffrageIniFile)) {
             $chiffrageIniFile = __DIR__.'/../config/chiffrage.ini';
         } elseif (!is_readable($chiffrageIniFile)) {
-            throw new InvalidArgumentException("Le fichier {$chiffrageIniFile} n'existe pas ou n'est pas accessible en lecture.");
+            throw new InvalidArgumentException("The iniFile {$chiffrageIniFile} does not exist or is not readable.");
         }
 
         $conf = parse_ini_file($chiffrageIniFile, true);
         foreach ($conf as $name => $cfg) {
             if (isset($this->rules[$cfg['tag']])) {
-                throw new InvalidArgumentException("Le tag {$cfg['tag']} existe déjà (rule {$name}).");
+                throw new InvalidArgumentException("The tag {$cfg['tag']} already exist (rule {$name}).");
             }
 
             $this->rules[$cfg['tag']] = [
@@ -40,36 +40,36 @@ class Pattern
     }
 
     /**
-     * Check le pattern indiqué.
+     * Check the pattern
      *
      * @param string &$pattern Format: £[a-z][a-z][0-9]{0,2}
      *
      * @return bool
      */
-    public function is_valid(&$pattern)
+    public function isValid(&$pattern)
     {
-        $this->last_extract = null; // reset check précédent
+        $this->lastExtract = null; // reset previous check
 
         if (empty($pattern)) {
-            throw new InvalidArgumentException('Le pattern indiqué est vide.');
+            throw new InvalidArgumentException('The pattern is empty');
         } elseif (!preg_match('#^'. self::REGEXP .'$#i', $pattern, $extract)) {
-            throw new InvalidArgumentException("Le pattern {$pattern} est invalide.");
+            throw new InvalidArgumentException("The pattern {$pattern} is invalid.");
         } elseif (!isset($this->rules[$extract[1]])) {
-            throw new InvalidArgumentException("La règle {$extract[1]} n'existe pas.");
+            throw new InvalidArgumentException("The rule {$extract[1]} doesn't exist.");
         }
 
-        // Difficulté: Valeur par défaut
+        // Difficulty: Value by default
         if (empty($extract[3])) {
             $extract[3] = 0;
         }
 
-        $this->last_extract = $extract;
+        $this->lastExtract = $extract;
 
         return true;
     }
 
     /**
-     * Calcul le temps en heure à partir d'un pattern.
+     * Calculate the time in hours from a pattern.
      *
      * @param string &$pattern
      *
@@ -79,15 +79,15 @@ class Pattern
     {
         // Check pattern
         try {
-            $this->is_valid($pattern);
+            $this->isValid($pattern);
 
         } catch (InvalidArgumentException $exception) {
             return null;
         }
 
 
-        // exemple: £BA2 signifie Block Article, difficulté 2, temps estimé: 3h+(0.5*2) = 4h
-        $extract = $this->last_extract;
+        // example: £BA2 mean Block Article, difficulté 2, evaluate time: 3h+(0.5*2) = 4h
+        $extract = $this->lastExtract;
 
         $calcul = $this->rules[$extract[1]]['time'];
         $calcul += ($this->rules[$extract[1]]['add'] * $extract[3]);
