@@ -3,7 +3,7 @@
  * @name Chiffrage Pattern
  * @note: Returns from a tag, a number of hours
  * @author Jgauthi <github.com/jgauthi>
- * @version 1.0
+ * @version 2.0
 
  ******************************************************************************************************/
 namespace Jgauthi\Tools\Chiffrage;
@@ -12,12 +12,12 @@ use InvalidArgumentException;
 
 class Pattern
 {
-    const REGEXP = '\£([a-z])([a-z])([0-9]{1,2})?';
+    public const REGEXP = '\£([a-z])([a-z])([0-9]{1,2})?';
 
-    private $rules = [];
-    private $lastExtract = null;
+    private array $rules = [];
+    private ?array $lastExtract = null;
 
-    public function __construct($chiffrageIniFile = null)
+    public function __construct(?string $chiffrageIniFile = null)
     {
         if (empty($chiffrageIniFile) || !preg_match('#\.ini$#i', $chiffrageIniFile)) {
             $chiffrageIniFile = __DIR__.'/../config/chiffrage.ini';
@@ -41,12 +41,9 @@ class Pattern
 
     /**
      * Check the pattern
-     *
      * @param string &$pattern Format: £[a-z][a-z][0-9]{0,2}
-     *
-     * @return bool
      */
-    public function isValid(&$pattern)
+    public function isValid(string &$pattern): bool
     {
         $this->lastExtract = null; // reset previous check
 
@@ -70,12 +67,8 @@ class Pattern
 
     /**
      * Calculate the time in hours from a pattern.
-     *
-     * @param string &$pattern
-     *
-     * @return int
      */
-    public function calcul(&$pattern)
+    public function calcul(string &$pattern): ?int
     {
         // Check pattern
         try {

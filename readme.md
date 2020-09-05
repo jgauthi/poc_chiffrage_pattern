@@ -15,7 +15,7 @@ Or you can add this poc like a dependency, in this case edit your [composer.json
     { "type": "git", "url": "git@github.com:jgauthi/poc_chiffrage_pattern.git" }
   ],
   "require": {
-    "jgauthi/poc_chiffrage_pattern": "1.*"
+    "jgauthi/poc_chiffrage_pattern": "2.*"
   }
 }
 ```
