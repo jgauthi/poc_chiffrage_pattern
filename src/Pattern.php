@@ -8,26 +8,27 @@
  ******************************************************************************************************/
 namespace Jgauthi\Tools\Chiffrage;
 
+use InvalidArgumentException;
+
 class Pattern
 {
+    const REGEXP = '\£([a-z])([a-z])([0-9]{1,2})?';
+
     private $rules = [];
     private $last_extract = null;
-    private $regexp = '\£([a-z])([a-z])([0-9]{1,2})?';
 
     public function __construct($chiffrageIniFile = null)
     {
         if (empty($chiffrageIniFile) || !preg_match('#\.ini$#i', $chiffrageIniFile)) {
             $chiffrageIniFile = __DIR__.'/../config/chiffrage.ini';
         } elseif (!is_readable($chiffrageIniFile)) {
-            user_error("Le fichier {$chiffrageIniFile} n'existe pas ou n'est pas accessible en lecture.");
-            return false;
+            throw new InvalidArgumentException("Le fichier {$chiffrageIniFile} n'existe pas ou n'est pas accessible en lecture.");
         }
 
         $conf = parse_ini_file($chiffrageIniFile, true);
         foreach ($conf as $name => $cfg) {
             if (isset($this->rules[$cfg['tag']])) {
-                user_error("Le tag {$cfg['tag']} existe déjà (rule {$name}).");
-                continue;
+                throw new InvalidArgumentException("Le tag {$cfg['tag']} existe déjà (rule {$name}).");
             }
 
             $this->rules[$cfg['tag']] = [
@@ -50,11 +51,11 @@ class Pattern
         $this->last_extract = null; // reset check précédent
 
         if (empty($pattern)) {
-            return !user_error('Le pattern indiqué est vide.');
-        } elseif (!preg_match("#^{$this->regexp}$#", strtolower($pattern), $extract)) {
-            return !user_error("Le pattern {$pattern} est invalide.");
+            throw new InvalidArgumentException('Le pattern indiqué est vide.');
+        } elseif (!preg_match('#^'. self::REGEXP .'$#i', $pattern, $extract)) {
+            throw new InvalidArgumentException("Le pattern {$pattern} est invalide.");
         } elseif (!isset($this->rules[$extract[1]])) {
-            return !user_error("La règle {$extract[1]} n'existe pas.");
+            throw new InvalidArgumentException("La règle {$extract[1]} n'existe pas.");
         }
 
         // Difficulté: Valeur par défaut
@@ -77,9 +78,13 @@ class Pattern
     public function calcul(&$pattern)
     {
         // Check pattern
-        if (!$this->is_valid($pattern)) {
+        try {
+            $this->is_valid($pattern);
+
+        } catch (InvalidArgumentException $exception) {
             return null;
         }
+
 
         // exemple: £BA2 signifie Block Article, difficulté 2, temps estimé: 3h+(0.5*2) = 4h
         $extract = $this->last_extract;
@@ -88,15 +93,5 @@ class Pattern
         $calcul += ($this->rules[$extract[1]]['add'] * $extract[3]);
 
         return $calcul;
-    }
-
-    /**
-     * Retourne l'expression regulière pour être utilisé en-dehors de la class.
-     *
-     * @return string
-     */
-    public function get_regexp()
-    {
-        return $this->regexp;
     }
 }

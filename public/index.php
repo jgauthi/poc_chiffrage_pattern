@@ -13,7 +13,7 @@ if (!isset($_POST['var'])) {
         'Liste des taches:',
         '* Task1 Menu Article LorumIpsu £ma2',
         '* Task2 Feature Service DolorColor £fs3',
-        '* Task3 Template Page Lorem £tp1',
+        '* Task3 Template Page Lorem £tp',
         '* Task4 Block Article Ipsu £ba4',
     ];
     $_POST['var'] = implode("\n", $example);
@@ -23,7 +23,7 @@ if (!empty($_POST['var'])) {
     $chiffrage = new ChiffragePattern;
 
     // Détecter les pattern dans les taches
-    $regexp = $chiffrage->get_regexp();
+    $regexp = ChiffragePattern::REGEXP;
     $taches = explode("\n", $_POST['var']);
 
     // Calculer les chiffrages

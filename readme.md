@@ -43,7 +43,7 @@ The tool allows you to think about a task according to **its nature and its leve
 For example: _£ma2_, this tag mean: **M**enu **A**rticle difficulty 2.
 * The first word is the name of the rule _(the letter associate must be unique on ini file)_,
 * the second is a type of content (like article, configuration, page, service, theme) which is indicative without impacting the calculation.
-* The number represents the difficulty, from 1 (low) to 9 (very high).
+* The number represents the difficulty (optional), from 0 (no difficulty, default value if not set), 1 (low) to 9 (very high).
 
 In case on £ma2, the tool calculate:
 * Initial time: 2h
