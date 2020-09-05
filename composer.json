@@ -1,6 +1,6 @@
 {
   "name": "jgauthi/poc_chiffrage_pattern",
-  "description": "Tool to evaluate a workload in relation to the difficulty of different tasks.",
+  "description": "Tool to evaluate a workload in relation to the difficulty of different tasks; this tool returns from a tag like '£BA2', a number of hours.",
   "type": "library",
   "homepage": "https://github.com/jgauthi/poc_chiffrage_pattern",
   "require": {
